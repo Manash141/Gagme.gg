@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adventure Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #111;
+      color: #eee;
+      padding: 20px;
+    }
+    #game {
+      max-width: 600px;
+      margin: auto;
+    }
+    .option-button {
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      cursor: pointer;
+    }
+    .option-button:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h1>?? Text Adventure Game</h1>
+    <p id="text">Welcome to the forest. You hear wolves howling in the distance...</p>
+    <div id="options"></div>
+  </div>
+
+  <script>
+    const textElement = document.getElementById("text");
+    const optionsElement = document.getElementById("options");
+
+    const scenes = {
+      start: {
+        text: "You are standing at the edge of a dark forest.",
+        options: [
+          { text: "Enter the forest", next: "forest" },
+          { text: "Run away", next: "run" }
+        ]
+      },
+      forest: {
+        text: "You walk into the forest. You see a sword on the ground.",
+        options: [
+          { text: "Pick up the sword", next: "sword" },
+          { text: "Keep walking", next: "deepForest" }
+        ]
+      },
+      run: {
+        text: "You run away safely. But where's the adventure in that? Game over!",
+        options: [{ text: "Restart", next: "start" }]
+      },
+      sword: {
+        text: "You picked up the sword! A wild wolf appears!",
+        options: [
+          { text: "Fight the wolf", next: "fight" },
+          { text: "Run away", next: "run" }
+        ]
+      },
+      fight: {
+        text: "You bravely fight the wolf and win! You're a hero!",
+        options: [{ text: "Play again", next: "start" }]
+      },
+      deepForest: {
+        text: "You get lost in the forest. The end.",
+        options: [{ text: "Try again", next: "start" }]
+      }
+    };
+
+    function showScene(key) {
+      const scene = scenes[key];
+      textElement.textContent = scene.text;
+      optionsElement.innerHTML = "";
+      scene.options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option.text;
+        button.classList.add("option-button");
+        button.onclick = () => showScene(option.next);
+        optionsElement.appendChild(button);
+      });
+    }
+
+    showScene("start");
+  </script>
+</body>
+</html>
